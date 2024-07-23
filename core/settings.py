@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASE_URL = os.environ.get('PGURL')
+DATABASE_URL = os.environ.get('PGURL1')
 
 DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1000)
