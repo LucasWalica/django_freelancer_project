@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block title %}
+<title>Home Page</title>
+{% endblock title %}
+
+{% block body %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <a href="{% url "logout" %}"> Logout </a>
+    <div class="w-full max-w-3xl bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        {{user.username}}
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+
+{% block body %}
+<div class="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center">
+  <h2 class="text-2xl text-black fond-bold">Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div>{{ form.non_field_errors }}</div>
+    <div class="form-group">
+      <div>{{ form.username.label_tag }}</div>
+      <div>{{ form.username }}</div>
+    </div>
+    <div class="form-group">
+      <div>{{ form.password.label_tag }}</div>
+      <div>{{ form.password }}</div>
+    </div>
+    <button type="submit" class="border-emerald-950 border-2 m-2 bg-emerald-300 hover:bg-emerald-400 hover:pl-3 hover:pr-3 rouded-md pl-2 pr-2 text-2xl duration-150">Login</button>
+  </form>
+</div>
+{% endblock %}
