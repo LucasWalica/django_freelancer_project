@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Create new Skill 
+{% endblock title %}
+
+{% block body %}
+    <center>
+        <form method="POST" class="rounded-md border-2 border-emerald-200 bg-emerald-100 m-2 p-2">
+            <h1 class="text-xl">Create a new Skill: </h1>
+            {% csrf_token %}
+            <div class="m-4">
+                Name: 
+                {{form.name}}
+            </div>
+
+            <div>Add here a field of the skill?</div>
+            <div class="grid grid-cols-2">
+                <a class="border-2 border-blue-200 bg-blue-800 text-white rounded-md" href="{% url "profile" request.user.freelancerprofile.pk%}">Profile</a>
+                <button action="submit" class="rounded-md border-2 border-emerald-400 bg-emerald-600 ">Add skill</button>
+            </div>
+        </center>
+    </form>
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Create Freelancer Profile
+{% endblock title %}
+
+{% block body %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.bio.id_for_label }}">Bio</label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <div class="error">
+                    {{ form.bio.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <div>
+            <label for="{{ form.image.id_for_label }}">Image</label>
+            {{ form.image }}
+            {% if form.image.errors %}
+                <div class="error">
+                    {{ form.image.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit">Create Freelancer Profile</button>
+    </form>
+</div>
+{% endblock body %}

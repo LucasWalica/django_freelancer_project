@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Delete project offer
+{% endblock title %}
+
+{% block body %}
+<div class="m-2 border-2 border-emerald-200 p-2 rounded-md bg-emerald-100">
+    <center>
+        <h1 class="text-2xl">Delete Project</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <h1>Are you sure that you want to delete this project? </h1>
+            <div class="grid grid-cols-1 border-2 border-emerald-200 rounded-md m-2 p-2">
+                <div>
+                    <div class="text-xl">Title: </div>{{object.title}}
+                </div>
+                <div>
+                    <div class="text-xl">Description:</div>{{object.desc}}
+                </div>
+            </div>
+            <div class="grid grid-cols-2">
+                <a class="rounded-md border-2 bg-emerald-600 text-black border-emerald-400" href="{% url "profile" request.user.freelancerprofile.pk %}">Profile</a>
+                <button action="submit" class="rounded-md border-2 border-red-400 bg-red-600 ">Delete Project</button>
+            </div>
+        </form>
+    </center>
+</div>
+{% endblock body %}
