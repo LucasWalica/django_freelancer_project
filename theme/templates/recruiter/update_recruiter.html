@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Update Recruiter
+{% endblock title %}
+
+{% block body %}
+<div class="">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="text-center border-2 border-emerald-400 rounded-md m-4 p-4 bg-emerald-200">
+      <center>
+        <h1 class="text-xl m-4 border-2 border-emerald-200 rounded-md w-2/4 bg-emerald-400 shadow-md">
+          Update your recruiter profile {{ request.user.username }}
+        </h1>
+        <div>
+          {{ form.bio }}
+        </div>
+        <div class="m-4 border-2 border-black w-60 rounded-md">
+          <div class="border-2 w-48 border-emerald-50 bg-emerald-700 text-white">Active {{ form.active }}</div>
+          <div>
+            If you disable "active" your profile won't appear for freelancers
+          </div>
+        </div>
+        <div>
+          {{ form.image }}
+        </div>
+      </center>
+    </div>
+    <!--Buttons-->
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 text-center text-xl">
+      <a href="{% url 'recruiter' request.user.recruiterprofile.pk %}" class="border-2 m-2 pl-6 pr-6 rounded-md border-blue-400 bg-blue-300 shadow-md hover:bg-blue-700 hover:text-white duration-150">
+        Profile
+      </a>
+      <button type="submit" class="border-2 m-2 pl-6 pr-6 rounded-md border-emerald-400 bg-emerald-300 shadow-md hover:bg-emerald-700 hover:text-white duration-150">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock body %}

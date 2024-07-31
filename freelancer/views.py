@@ -1,15 +1,17 @@
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from .models import FreelancerProfile, ProjectOffer, Skills
 from .forms import SkillsForm, FreelancerProfileForm, ProjectOfferForm 
 from django.views.generic import View, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-# Create your views here.
 
 #Cruds para todos los modelos (para posteriormente implementarlos en el fronted)
 
+# Add comments logic, 
+# (basically they can only be added when project finished by X freelancer 
+# or project Finished)
+
+# add update and delete project logic -> only when projects not active 
 
 class CreateFreelancerProfileView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -101,10 +103,16 @@ class CreateProjectOfferView(LoginRequiredMixin, View):
                 time_in_days = form.cleaned_data.get('time_in_days') 
                 revisions = form.cleaned_data.get('revisions') 
                 image =form.cleaned_data.get('image') 
+                catOne = form.cleaned_data.get('catOne')
+                catTwo = form.cleaned_data.get('catTwo')
                 
                 freelance_profile = FreelancerProfile.objects.get(user=request.user)
 
-                p, created = ProjectOffer.objects.get_or_create(fkFler=freelance_profile, title=title, desc=desc, price=price, time_in_days=time_in_days, revisions=revisions, image=image)
+                p, created = ProjectOffer.objects.get_or_create(fkFler=freelance_profile,
+                                            title=title, desc=desc, price=price, 
+                                            time_in_days=time_in_days, 
+                                            revisions=revisions, image=image, 
+                                            catOne=catOne, catTwo=catTwo)
                 p.save()
                 return redirect('profile', pk=request.user.freelancerprofile.pk)
             context= {
@@ -128,16 +136,16 @@ class UpdateFreelancerProfileView(LoginRequiredMixin, UpdateView):
 
 class UpdateProjectOfferView(LoginRequiredMixin, UpdateView):
     model = ProjectOffer
-    fields = [ 'title', 'desc' , 'price' , 'time_in_days' , 'revisions', 'image']
+    fields = [ 'title', 'desc' , 'price' , 'time_in_days' , 'revisions', 'image', 'catOne', 'catTwo']
     template_name = 'freelancer/update_project.html'
 
     def get_success_url(self):
-        return reverse_lazy('profile', kwargs={'pk':self.object.fkFler.user.id})
-    
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.freelancerprofile.id})
+        
     def get_object(self):
         obj = super().get_object()
         if obj.fkFler.user != self.request.user:
-            return redirect('profile', kwargs={'pk': self.request.user.pk})
+            return redirect('profile', pk=self.request.user.freelancerprofile.id)
         return obj
 
 class DeleteProjectOfferView(LoginRequiredMixin, DeleteView):
@@ -187,6 +195,9 @@ class OwnProfileDetailView(LoginRequiredMixin, View):
             'project_offers': project_offers
         }
         return render(request, 'freelancer/own_profile_detail.html', context)
+    
+    def get_object(self):
+        return get_object_or_404(FreelancerProfile, user=self.request.user)
 
 class OtherProfileDetailView(View):
      def get(self, request, pk, *args, **kwargs):
@@ -209,3 +220,14 @@ def checkFreelancerExist(self, request):
     return None
 
 
+# Add limitator and redirections =D 
+# change this view with more context
+class ProjectListView(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        #test this
+        checkFreelancerExist(self, request)
+        projects = ProjectOffer.objects.all()
+        context= {
+            'projects':projects
+        }
+        return render(request, 'listing/project_list.html', context)

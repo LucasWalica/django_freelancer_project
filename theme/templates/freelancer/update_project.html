@@ -8,9 +8,13 @@ Update project offer
     <div class="m-2 border-2 border-emerald-200 p-2 rounded-md bg-emerald-100">
         <center>
             <h1 class="text-2xl">Update project</h1>
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>Title: <br>{{form.title}}</div>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 m-2">
+                    <div>Category one: <br>{{form.catOne}}</div>
+                    <div>Category two: <br>{{form.catTwo}}</div>
+                </div>
                 <div>Description: <br> {{form.desc}}</div>
                 <div>Price:  <br>{{form.price}}</div>
                 <div>Time in days: <br>{{form.time_in_days}}</div>

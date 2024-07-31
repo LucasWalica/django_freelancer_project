@@ -10,6 +10,7 @@ urlpatterns = [
     path("__reload__/", include("django_browser_reload.urls")),
     path('app/', include('users.urls')),
     path('freelancer/', include('freelancer.urls')),
+    path('recruiter/', include('recruiter.urls')),
     path('', Home.as_view(), name="homepage")
 ]
 

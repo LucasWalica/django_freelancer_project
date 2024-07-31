@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+
+{% block title %}
+<title>Recruiter Profile</title>
+{% endblock title %}
+
+{% block body %}
+<div class="border-2 border-emerald-200 m-1 rounded-md shadow-md p-4">
+  <div class="border-2 border-emerald-300 p-2 m-4 border-md shadow-md grid sm:grid-cols-1 md:grid-cols-2 ">
+    <div class="text-center m-4">
+      <div>
+        <h1 class="text-xl">User: {{profile.user}}</h1>
+      </div>
+      <div>
+        <h1 class="text-xl">Bio: {{profile.bio}}</h1>
+      </div>
+      <div>
+        <h1 class="text-xl">Active: {{profile.active}}</h1>
+      </div>
+      <div>
+        <h1 class="text-xl">Stars: {{profile.stars}}</h1>
+      </div>
+    </div>
+    <div>
+      <center>
+        {% if profile.image %}
+        <figure>
+          <img src="{{profile.image.url}}" alt="Recruiter logo"></img>
+        </figure>
+        {% else %}
+        <div class="text-center">
+          no image avaible add default image when possible 
+        </div>
+        {% endif %}    
+      </center>
+    </div>
+  </div>
+
+  <div>
+    <div class="grid grid-cols-3 text-center">
+      <a href="{% url "freeProjectCreate" %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+        Create new project
+      </a>
+      <a href="{% url "updateRecruiter" request.user.recruiterprofile.pk %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+        Update Profile
+      </a>
+      <!--Add search bar with Q-->
+      <a class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+        Search for freelancers
+      </a>
+    </div>
+    <center>
+      <div class="m-4 border-2 p-2 border-emerald-300 rounded-md shadow-sm text-center text-2xl w-1/4">
+        Your projects: 
+      </div>
+    </center>
+    <div class="grid sm:grid-cols-1 md:grid-cols-3">
+      {% for project in project_offers %}
+      <div class="border-2 p-4 m-2 border-emerald-200 text-center">
+        <h1 class="text-xl border-2 border-emerald-100">
+          {{project.title}}
+        </h1>
+        <h1>{{project.desc}}</h1>
+        <h1>{{project.catOne}}</h1>
+        <h1>{{project.catTwo}}</h1>
+        <h1>{{project.vacancies}}</h1>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
+

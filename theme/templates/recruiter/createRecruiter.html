@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block title %}
+<title>Create Recruiter</title>
+{% endblock title %}
+
+{% block body %}
+<div class="m-2 border-2 border-r-emerald-300 rounded-md bg-emerald-100 shadow-md">
+  <center>
+    <h1 class="text-3xl m-2 border-2 border-emerald-500 w-2/4 rounded-md">
+      Create your Recruiter Profile: 
+    </h1>
+    <h2 class="text-xl">Your recruiter username will be: {{request.user.username}}</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+      <div class="text-left m-4 ">
+        <h1>Introduce your business or projects so freelancers can find you better.</h1>
+        {{form.bio}}
+      </div>
+      <div class="m-4 border-2 rounded-md border-emerald-500 p-2">
+        <h1 class="text-left">You can add an image to be showed in your recruiter profile,  but it is not necesary.</h1>
+        <center>
+            <div>{{form.image}}</div>
+        </center>
+      </div>
+
+        <button type="submit" class=" p-2 border-2 border-emerald-700 rounded-md bg-emerald-400 hover:pl-4 hover:pr-4 duration-150 hover:bg-emerald-200">
+          Submit
+        </button>
+      </form>
+  </center>
+</div>
+{% endblock body %}

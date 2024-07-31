@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import (CreateFreelancerProfileView, CreateSkillView,
                      CreateProjectOfferView, UpdateFreelancerProfileView, UpdateProjectOfferView, 
-                     DeleteSkillView, DeleteProjectOfferView, OwnProfileDetailView, OtherProfileDetailView)
+                     DeleteSkillView, DeleteProjectOfferView, OwnProfileDetailView, OtherProfileDetailView,
+                     ProjectListView)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,6 +17,7 @@ urlpatterns = [
     path('project/delete/<int:pk>/', DeleteProjectOfferView.as_view(), name="projectDel"),
     path('profile/<int:pk>/', OwnProfileDetailView.as_view(), name="profile"),
     path('freelancer/<int:pk>/', OtherProfileDetailView.as_view(), name="freelancer"),
+    path('projectlist/', ProjectListView.as_view(), name='projects')
 ]
 
 

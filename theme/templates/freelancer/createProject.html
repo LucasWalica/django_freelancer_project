@@ -13,6 +13,9 @@ Create new Project Offer
         <div>Price: <br>{{form.price}}</div>
         <div>Number of days that it will take: <br> {{form.time_in_days}}</div>
         <div>Number of revisions that can be done by the client: <br> {{form.revisions}}</div>
+        <div>CategoryOne: <br> {{form.catOne}}</div>
+        <div>CategoryTwo: <br> {{form.catTwo}}</div>
+        <br>
         <div class="m-2">{{form.image}}</div>
         <div class="grid grid-cols-2">
             <a class="bg-blue-300 text-center border-2 border-blue-200" href="{% url "profile" request.user.freelancerprofile.pk %}">Profile</a>

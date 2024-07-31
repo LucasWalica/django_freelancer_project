@@ -5,10 +5,39 @@
 {% endblock title %}
 
 {% block body %}
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <a href="{% url "logout" %}"> Logout </a>
-    <div class="w-full max-w-3xl bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        {{user.username}}
+<div class="">
+    <div class="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h1 class="m-2 text-3xl text-center">Welcome back {{user.username}}</h1>
+        <div class="grid md:grid-cols-3 text-center">
+            <a href="{% url "logout" %}" class="items-center justify-center border-2 m-2 rounded-md pr-4 pl-4 p-2 border-red-200 bg-red-600 text-white">Logout </a>
+            {% if  has_freelancer_profile%}
+                <a href="{% url "profile" request.user.freelancerprofile.pk %}" class="items-center justify-center border-2 m-2 rounded-md pr-4 pl-4 p-2 border-emerald-200 bg-emerald-600 text-white">
+                    Freelancer Profile
+                </a>
+            {% else %}
+                <a href="{% url "profileCreate"  %}" class="items-center justify-center border-2 m-2 rounded-md pr-4 pl-4 p-2 border-emerald-200 bg-emerald-600 text-white">
+                    Create Freelancer Profile
+                </a> 
+            {% endif %}
+            
+            {% if has_recruiter_profile %}
+                {% if recruiter_profile %}
+                    <a href="{% url 'recruiter' recruiter_profile.pk %}" class="border-2 m-2 rounded-md pr-4 pl-4 p-2 border-blue-200 bg-blue-600 text-white items-center justify-center">
+                        Need to hire someone?
+                    </a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'createRecruiter' %}" class="border-2 m-2 rounded-md pr-4 pl-4 p-2 border-blue-200 bg-blue-600 text-white items-center justify-center">
+                    Create Recruiter Profile
+                </a>
+            {% endif %}
+            
+        </div>
     </div>
+    <!--Add information, contact, etc...-->
+    <div>
+        news, blog, explanation of the webapp, etc...
+    </div>
+</div>
 </div>
 {% endblock body %}

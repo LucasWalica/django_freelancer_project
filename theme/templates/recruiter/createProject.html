@@ -1,0 +1,51 @@
+{% extends 'main.html' %}
+
+{% block title %}
+<title>Create Project</title>
+{% endblock title %}
+
+{% block body %}
+<div class="">
+  <form method="POST" class="text-center border-2 border-emerald-500 rounded-md bg-emerald-100 m-2 p-4">
+      {% csrf_token %}
+      <div>
+        <h1 class=" p-1 border-2 m-2 border-emerald-200 bg-emerald-300 rounded-md shadow-sm">
+          Project title: 
+        </h1>
+        {{form.title}}
+      </div>
+      <div>
+        <h1 class=" p-1 border-2 m-2 border-emerald-200 bg-emerald-300 rounded-md shadow-sm">
+          Add a project description to help freelancers: 
+        </h1>
+        {{form.desc}}
+      </div>
+      <div>
+        <h1 class=" p-1 border-2 m-2 border-emerald-200 bg-emerald-300 rounded-md shadow-sm">
+          Category one: 
+        </h1>
+        {{form.catOne}}
+      </div>
+      <div>
+        <h1 class=" p-1 border-2 m-2 border-emerald-200 bg-emerald-300 rounded-md shadow-sm">
+          Category two, not necesary: 
+        </h1>
+        {{form.catTwo}}
+      </div>
+      <div>
+        <h1 class=" p-1 border-2 m-2 border-emerald-200 bg-emerald-300 rounded-md shadow-sm">
+          Number of people that you are searching for: 
+        </h1>
+        {{form.vacancies}}
+      </div>
+      <div class="grid grid-cols-2">
+        <button type="submit" class="border-2 border-emerald-400 pl-4 pr-4 p-2 rounded-md m-4 bg-emerald-400 hover:pl-6 hover:pr-6 duration-150 hover:bg-emerald-300">
+          Submit
+        </button>
+        <a href="{% url "recruiter" request.user.recruiterprofile.pk %}" class="border-2 border-blue-400 pl-4 pr-4 p-2 rounded-md m-4 bg-blue-400 hover:pl-6 hover:pr-6 duration-150 hover:bg-blue-300">
+          Recruiter Profile
+        </a>
+      </div>
+  </form>
+</div>
+{% endblock body %}

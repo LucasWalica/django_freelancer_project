@@ -19,10 +19,18 @@
         <div class="text-xl m-4 border-2 border-emerald-100 rounded-md text-center">Bio:  {{profile.bio}}</div>
     </div>
     <br>
-    <!--Add skil/project offer-->
-    <div class="grid grid-cols-2 text-center">
-        <a href="{% url "skillCreate" %}" class="border-2 bg-yellow-300 border-yellow-200">Add a new Skill</a>
-        <a href="{% url "projectCreate" %}" class="border-2 bg-blue-300 border-blue-200" >add a new Project</a>
+    <!--Add skil/project offer/ project list button redirect-->
+    <div class="grid md:grid-cols-3 gap-y-2 text-center">
+        <!--Search for contractors? something like that change this button-->
+        <a href="" class="border-2 p-2 bg-violet-300 border-violet-200 hover:bg-violet-900 hover:text-white duration-150">
+            Search for recruiters
+        </a>
+        <a href="{% url "skillCreate" %}" class="border-2 p-2 bg-yellow-300 border-yellow-200 hover:bg-yellow-900 hover:text-white duration-150">
+            Add a new Skill
+        </a>
+        <a href="{% url "projectCreate" %}" class="border-2 p-2 bg-blue-300 border-blue-200 hover:bg-blue-900 hover:text-white duration-150">
+            Add a new Project
+        </a>
     </div>
     <!--Skill User data-->
     <div class="bg-emerald-300 p-2 m-2 rounded-md">
@@ -45,12 +53,19 @@
         </div> 
         <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             {% for project_offer in project_offers %}
-            <div class="p-2 bg-emerald-500 border-2 border-emerald-200 rounded-md">
+            <div class="p-2 bg-emerald-500 border-2 h-auto border-emerald-200 rounded-md">
                 <div class="m-2 border-2 rounded-md bg-emerald-100 min-h-80">
-                    <h1 class="text-2xl text-center">{{project_offer.title}}</h1>
-                    <div class="p-2 m-2 min-h-48">
+                    <h1 class="text-2xl text-center m-2 border-2 border-emerald-200 rounded-md bg-emerald-400">{{project_offer.title}}</h1>
+                    <div class="p-2 m-2 min-h-64">
                         <div class="text-center text-xl ">Description:</div>
                         {{project_offer.desc}}
+                    </div>
+                    <!--Mejorar condicional para mejor visualizacion-->
+                    <div class="grid sm:grid-cols-1 md:grid-cols-2 border-2 border-emerald-200 rounded-md m-2 text-center">
+                        <div>{{project_offer.catOne}}</div>
+                        {% if project_offer.catTwo != 'OTHER' %}
+                        <div>{{ project_offer.catTwo }}</div>
+                        {% endif %}
                     </div>
                     <div class="text-center bg-emerald-700 text-white rounded-md">Price: {{project_offer.price}} $</div>
                     <div class="text-center">Done in {{project_offer.time_in_days}} days</div>
@@ -65,7 +80,7 @@
                         {% endif %}
                     </center>
                 </div>
-                <div class=" mt-2 border-2 border-emerald-200 rounded-md grid grid-cols-2">
+                    <div class=" mt-2 border-2 border-emerald-200 rounded-md grid grid-cols-2">
                     <a class="border-2 bg-red-500 p-1 rounded-md text-center" href="{% url "projectDel" project_offer.id %}">
                         Delete Project
                     </a>
