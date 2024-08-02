@@ -1,12 +1,12 @@
 {% extends 'main.html' %}
 
 {% block title %}
-<title>Recruiter Profile</title>
+Recruiter Profile
 {% endblock title %}
 
 {% block body %}
-<div class="border-2 border-emerald-200 m-1 rounded-md shadow-md p-4">
-  <div class="border-2 border-emerald-300 p-2 m-4 border-md shadow-md grid sm:grid-cols-1 md:grid-cols-2 ">
+<div class="border-2 border-emerald-200 m-1 rounded-md shadow-md p-4 bg-emerald-100">
+  <div class="border-2 border-emerald-300 bg-emerald-500 p-2 m-4 border-md shadow-md grid sm:grid-cols-1 md:grid-cols-2 ">
     <div class="text-center m-4">
       <div>
         <h1 class="text-xl">User: {{profile.user}}</h1>
@@ -38,32 +38,40 @@
 
   <div>
     <div class="grid grid-cols-3 text-center">
-      <a href="{% url "freeProjectCreate" %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+      <a href="{% url "freeProjectCreate" %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150 bg-emerald-400">
         Create new project
       </a>
-      <a href="{% url "updateRecruiter" request.user.recruiterprofile.pk %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+      <a href="{% url "updateRecruiter" request.user.recruiterprofile.pk %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150  bg-emerald-400">
         Update Profile
       </a>
       <!--Add search bar with Q-->
-      <a class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150">
+      <a href="{% url "recruiterSearch" %}" class="border-2 border-emerald-500 rounded-md shadow-md m-4 pt-2 pb-2 hover:bg-emerald-900 hover:text-white duration-150  bg-emerald-400">
         Search for freelancers
       </a>
     </div>
-    <center>
-      <div class="m-4 border-2 p-2 border-emerald-300 rounded-md shadow-sm text-center text-2xl w-1/4">
-        Your projects: 
+      <center>
+        <div class="m-4 border-2 p-2 bg-emerald-300 border-emerald-300 rounded-md shadow-sm text-center text-2xl w-1/4">
+          Your projects: 
       </div>
     </center>
     <div class="grid sm:grid-cols-1 md:grid-cols-3">
       {% for project in project_offers %}
-      <div class="border-2 p-4 m-2 border-emerald-200 text-center">
-        <h1 class="text-xl border-2 border-emerald-100">
+      <div class="border-2 p-4 m-2 border-emerald-200 text-center bg-emerald-500">
+        <h1 class="text-xl border-2 border-emerald-300 rounded-md">
           {{project.title}}
         </h1>
         <h1>{{project.desc}}</h1>
         <h1>{{project.catOne}}</h1>
         <h1>{{project.catTwo}}</h1>
         <h1>{{project.vacancies}}</h1>
+        <div class="m-2 p-2 grid grid-cols-2">
+          <a href="{% url "updateRecruiterProject" project.pk %}" class="p-2 border-2 border-blue-300 bg-blue-700 text-white rounded-md shadow-md hover:bg-blue-400 hover:text-black duration-150">
+            Update Project
+          </a>
+          <a href="{% url "deleteRecruiterProject" project.pk %}" class="p-2 border-2 border-red-300 bg-red-700 text-white rounded-md shadow-md hover:bg-red-400 hover:text-black duration-150">
+            Delete Project
+          </a>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -71,4 +79,5 @@
 </div>
 
 {% endblock body %}
+
 

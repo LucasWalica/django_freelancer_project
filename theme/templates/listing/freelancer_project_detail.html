@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Project Detail
+{% endblock title %}
+
+{% block body %}
+<div class="border-2 border-emerald-200 rounded-md p-4 m-2 bg-emerald-200">
+    <h1 class="text-2xl">{{ freelancerProject.title }}.</h1>
+    <p><strong>Freelancer:</strong> {{ freelancerProject.fkFler.user.username }}.</p>
+    <p><strong>Title:</strong> {{ freelancerProject.title }}.</p>
+    <p><strong>Description:</strong> {{ freelancerProject.desc }}.</p>
+    <div class="grid md:grid-cols-2 text-center m-2 border-2 border-emerald-400 rounded-md">
+        <p><strong>Category One:</strong> {{ freelancerProject.catOne }}.</p>
+        <p><strong>Category Two:</strong> {{ freelancerProject.catTwo }}.</p>
+    </div>
+
+    <div class="m-2 text-center grid md:grid-cols-3 text-xl">
+        <p><strong>Price :</strong> {{ freelancerProject.price }} $.</p>
+        <p><strong>Done in </strong> {{ freelancerProject.time_in_days }} <strong>days.</strong></p>
+        <p><strong>Number of revisions </strong> {{ freelancerProject.revisions }}.</p>
+    </div>
+
+    {% if freelancerProject.image %}
+    <center>
+        <img class="m-4 rounded-md shadow-md" src="{{ freelancerProject.image.url }}" height="300px" width="300px" class="rounded-md shadow-md">
+    </center>
+    {% endif %}
+
+    <div class="grid md:grid-cols-3 text-center m-2 border-2 border-emerald-300 rounded-md">
+        <div>
+            <a href="{% url "freelancer" freelancerProject.fkFler.user.freelancerprofile.pk %}">
+                Freelancer Profile
+            </a>
+        </div>
+        <div>Chat with </div>
+        <div>
+            <a href="{% url "recruiterSearch" %}">
+                Go back to projects
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+    

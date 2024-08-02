@@ -5,6 +5,8 @@ from .forms import SkillsForm, FreelancerProfileForm, ProjectOfferForm
 from django.views.generic import View, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from recruiter.models import RecruiterProject, RecruiterProfile
+
 #Cruds para todos los modelos (para posteriormente implementarlos en el fronted)
 
 # Add comments logic, 
@@ -135,6 +137,8 @@ class UpdateFreelancerProfileView(LoginRequiredMixin, UpdateView):
        return obj
 
 class UpdateProjectOfferView(LoginRequiredMixin, UpdateView):
+    def get(self, request, *args, **kwargs):
+        checkFreelancerExist(self, request)
     model = ProjectOffer
     fields = [ 'title', 'desc' , 'price' , 'time_in_days' , 'revisions', 'image', 'catOne', 'catTwo']
     template_name = 'freelancer/update_project.html'
@@ -168,6 +172,7 @@ class DeleteSkillView(LoginRequiredMixin, DeleteView):
     model = Skills
     template_name = 'freelancer/delete_skill.html'
      
+     # hay que testear los metodos de redireccion
     def get_success_url(self):
         return reverse_lazy('profile', kwargs={'pk': self.request.user.freelancerprofile.pk})
     
@@ -199,8 +204,10 @@ class OwnProfileDetailView(LoginRequiredMixin, View):
     def get_object(self):
         return get_object_or_404(FreelancerProfile, user=self.request.user)
 
+
 class OtherProfileDetailView(View):
      def get(self, request, pk, *args, **kwargs):
+        checkRecruiterExists(self, request)
         profile = get_object_or_404(FreelancerProfile, pk=pk)
         skills = Skills.objects.filter(fkFler=profile)
         project_offers = ProjectOffer.objects.filter(fkFler=profile)
@@ -209,7 +216,7 @@ class OtherProfileDetailView(View):
             'skills':skills,
             'project_offers':project_offers
         }
-        return render(request, 'other_profile_detail.html', context)
+        return render(request, 'freelancer/other_profile_detail.html', context)
 
 
 def checkFreelancerExist(self, request):
@@ -220,14 +227,33 @@ def checkFreelancerExist(self, request):
     return None
 
 
+def checkRecruiterExists(self, request):
+    try:
+        RecruiterProfile.objects.get(user=request.user)
+    except RecruiterProfile.DoesNotExist:
+        return redirect('profileCreate')
+    return None 
+
+
+
 # Add limitator and redirections =D 
 # change this view with more context
 class ProjectListView(LoginRequiredMixin, View):
-    def get(self, request, pk, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         #test this
         checkFreelancerExist(self, request)
-        projects = ProjectOffer.objects.all()
+        recruiterProjects = RecruiterProject.objects.all()
         context= {
-            'projects':projects
+            'recruiterProjects':recruiterProjects
         }
-        return render(request, 'listing/project_list.html', context)
+        return render(request, 'listing/freelancerSearch.html', context)
+
+
+class ProjectDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        checkRecruiterExists(self, request)
+        freelancerProject = get_object_or_404(ProjectOffer, pk=pk)
+        context = {
+            'freelancerProject':freelancerProject
+        }
+        return render(request, 'listing/freelancer_project_detail.html', context)

@@ -1,0 +1,19 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Project Detail
+{% endblock title %}
+
+{% block body %}
+<div class="border-2 border-emerald-200 rounded-md p-4 m-2 bg-emerald-200">
+    <h1 class="text-2xl">{{ rec_project.title }}</h1>
+    <p><strong>Recruiter:</strong> {{ rec_project.fkRec.user.username }}</p>
+    <p><strong>Description:</strong> {{ rec_project.desc }}</p>
+    <p><strong>Category One:</strong> {{ rec_project.catOne }}</p>
+    <p><strong>Category Two:</strong> {{ rec_project.catTwo }}</p>
+    <p><strong>Vacancies:</strong> {{ rec_project.vacancies }}</p>
+    {% if rec_project.image %}
+        <img src="{{ rec_project.image.url }}" alt="{{ rec_project.title }}">
+    {% endif %}
+</div>
+{% endblock body %}

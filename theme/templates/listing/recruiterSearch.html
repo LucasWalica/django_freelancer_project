@@ -1,0 +1,42 @@
+{% extends "main.html" %}
+{% block title %}
+    Freelancer Projects
+{% endblock title %}
+{% block body %}
+<div>
+    <!--Mejorar UI-->
+    <h1 class="text-3xl text-center">Freelancer project list: </h1>
+    <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4">
+        {% for freeProject in freelancerProjects %}
+        <div class="min-h-72 border-2 rounded-md shadow-sm border-emerald-200 bg-emerald-500 text-center">
+            <div class="min-h-48">
+                <h1 class="text-3xl">{{freeProject.title}}</h1>
+                <center>
+                    <img class="rounded-md min-h-16 max-h-16" src="{{freeProject.image.url}}" height="100px" width="100px"></img>
+                </center>
+                <div>Price {{freeProject.price}} $</div>
+                <div>Done in {{freeProject.time_in_days}} days.</div>
+                <div>Revisions: {{freeProject.revisions}}</div>
+                <center>
+                    <div class="border-2 m-2 w-2/4 rounded-md border-emerald-200">
+                        <div class="bg-emerald-400 rounded-md m-2">Categories: </div>
+                        <div class="grid grid-cols-1">
+                            <div>{{freeProject.catOne}}</div>
+                            <div>{{freeProject.catTwo}}</div>
+                        </div>
+                    </div>
+                </center>
+            </div>
+            <center>
+                <div class="mt-6">
+                    <a  href="{% url "freelancerProject" pk=freeProject.pk %}" class="rounded-md border-2 hover:bg-emerald-200 duration-150 border-white bg-emerald-300 p-4 m-2 hover:pr-6 hover:pl-6">
+                        See project details
+                    </a>
+                </div>
+            </center>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock body %}

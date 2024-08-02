@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% block title %}
+    ProjectRecruiter List
+{% endblock title %}
+{% block body %}
+<div>
+    <!--Mejorar UI-->
+    <h1 class="text-3xl text-center">ProjectRecruiter List: </h1>
+    {% for projectRecruiter in recruiterProjects %}
+        <div class="items-center justify-center text-center border-2 border-emerald-200 p-2 m-2">
+            <h1 class="text-3xl">{{projectRecruiter.title}}</h1>
+            <div>{{projectRecruiter.desc}}</div>
+            {{projectRecruiter.catOne}}
+            <br>
+            {{projectRecruiter.catTwo}}
+            <br><br>
+            <center>
+                <a  href="{% url "recruiterProject" pk=projectRecruiter.pk %}" class="rounded-md p-4 m-11 border-2 border-emerald-200 bg-emerald-400 hover:bg-emerald-700 hover:text-white duration-150">
+                    See Details
+                </a>
+            </center>
+            <br>
+        </div>
+    {% endfor %}
+</div>
+{% endblock body %}

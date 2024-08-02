@@ -1,0 +1,75 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    Profile
+{% endblock title %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-100">
+    <!--Profile data container-->
+    <div class=" border-2 border-emerald-200 rounded-md p-2 m-2 bg-emerald-500">
+        <div class="grid grid-cols-2">
+            <div class="text-xl grid items-center justify-center border-2 m-2">
+                <div>Username: {{profile.user}}</div>
+                <div>Active: {{profile.active}}</div>
+                <div>Stars: {{profile.stars}}</div>
+            </div>
+            <img class="rounded-md" height="200px" width="200px" src="{{profile.image.url}}"/>
+        </div>
+        <div class="text-xl m-4 border-2 border-emerald-100 rounded-md text-center">Bio:  {{profile.bio}}</div>
+    </div>
+    <br>
+    <!--Skill User data-->
+    <div class="bg-emerald-300 p-2 m-2 rounded-md">
+        <div class="text-2xl text-center">
+            Skills: 
+        </div>
+        <div class="grid lg:grid-cols-8 sm:grid-cols-2 md:grid-cols-3">
+            {% for skill in skills %}
+            <div class="border-2 bg-violet-400 border-violet-100 rounded-md p-2 m-1 gap-2">
+                <div class="flex items-center justify-center text-center">{{skill.name}} </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!--Project User data-->
+    <div class="grid grid-cols-1">
+        <div class="text-3xl text-center border-2 border-emerald-300 m-2 rounded-md bg-emerald-200">
+            Project offers:
+        </div> 
+        <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+            {% for project_offer in project_offers %}
+            <div class="p-2 bg-emerald-500 border-2 h-auto border-emerald-200 rounded-md">
+                <div class="m-2 border-2 rounded-md bg-emerald-100 min-h-80">
+                    <h1 class="text-2xl text-center m-2 border-2 border-emerald-200 rounded-md bg-emerald-400">{{project_offer.title}}</h1>
+                    <div class="p-2 m-2 min-h-64">
+                        <div class="text-center text-xl ">Description:</div>
+                        {{project_offer.desc}}
+                    </div>
+                    <!--Mejorar condicional para mejor visualizacion-->
+                    <div class="grid sm:grid-cols-1 md:grid-cols-2 border-2 border-emerald-200 rounded-md m-2 text-center">
+                        <div>{{project_offer.catOne}}</div>
+                        {% if project_offer.catTwo != 'OTHER' %}
+                        <div>{{ project_offer.catTwo }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="text-center bg-emerald-700 text-white rounded-md">Price: {{project_offer.price}} $</div>
+                    <div class="text-center">Done in {{project_offer.time_in_days}} days</div>
+                    <div class="text-center">Number of revisions: {{project_offer.revisions}}</div>
+                </div>
+                <div class="min-h-40 grid items-center justify-center">
+                    <center>
+                        {% if project_offer.image %}
+                            <img class="rounded-md" src="{{ project_offer.image.url }}" height="200px" width="200px">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                    </center>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

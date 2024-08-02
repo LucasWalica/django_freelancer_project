@@ -4,7 +4,7 @@ from .models import RecruiterProfile, RecruiterProject, CommentOnRecruiter
 from .forms import RecruiterProjectForm, RecruiterProfileForm, UpdateRecruiterProfileForm
 from django.views.generic import View, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from freelancer.models import ProjectOffer, FreelancerProfile
 
 # Add comments logic, 
 # (basically they can only be added when project donde by X freelancer 
@@ -110,12 +110,13 @@ class UpdateRecruiterProject(LoginRequiredMixin, UpdateView):
         
     def get_object(self):
         obj = super().get_object()
-        if obj.fkFler.user != self.request.user:
-            return redirect('profile', pk=self.request.user.recruiter_profile.id)
+        if obj.fkRec.user != self.request.user:
+            return redirect('recruiter', kwargs={'pk': self.request.user.recruiter_profile.pk})
         return obj
 
+
 # add active atribute 
-class DeleteRecruiterProject(LoginRequiredMixin, View):
+class DeleteRecruiterProject(LoginRequiredMixin, DeleteView):
     model = RecruiterProject
     template_name = 'recruiter/delete_project.html'
     
@@ -124,7 +125,7 @@ class DeleteRecruiterProject(LoginRequiredMixin, View):
     
     def get_object(self):
         obj = super().get_object()
-        if obj.fkFler.user != self.request.user:
+        if obj.fkRec.user != self.request.user:
             return redirect('recruiter', kwargs={'pk': self.request.user.recruiter_profile.pk})
         return obj
 
@@ -149,6 +150,31 @@ class OwnRecruiterView(LoginRequiredMixin, View):
 
     def get_object(self):
         return get_object_or_404(RecruiterProfile, user=self.request.user)
+    
+
+
+# this view has to be tested and improved to not show unactive profiles
+class FreelancerProjectListAndFreelancers(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        checkRecruiterExists(self, request)
+        freelancerProjects = ProjectOffer.objects.all()
+        freelancerProfiles = FreelancerProfile.objects.all()
+        context = {
+            'freelancerProjects':freelancerProjects,
+            'freelancerProfiles':freelancerProfiles
+        }
+        return render(request, 'listing/recruiterSearch.html', context)
+
+# add limitations
+class RecruiterProjectDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+         checkFreelancerExist(self, request)
+         rec_project = get_object_or_404(RecruiterProject, pk=pk)
+         context = {
+             'rec_project':rec_project
+         }
+         return render(request, 'listing/recruiter_project_detail.html', context)
+
 
 def checkRecruiterExists(self, request):
     try:
@@ -156,3 +182,11 @@ def checkRecruiterExists(self, request):
     except RecruiterProfile.DoesNotExist:
         return redirect('profileCreate')
     return None 
+
+
+def checkFreelancerExist(self, request):
+    try:    
+        FreelancerProfile.objects.get(user=request.user)
+    except FreelancerProfile.DoesNotExist:
+        return redirect('profileCreate')
+    return None
