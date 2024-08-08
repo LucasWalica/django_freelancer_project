@@ -3,7 +3,7 @@ from pathlib import Path
 import os 
 
 env = environ.Env(
-    DEBUG= (bool, False)
+    DEBUG=(bool, False)
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +24,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'users',
     'freelancer',
     'recruiter',
-    'messages',
+    'messagesApp',
 ]
 
 

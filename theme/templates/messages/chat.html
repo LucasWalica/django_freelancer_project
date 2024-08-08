@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Chat
+{% endblock title %}
+
+{% block body %}
+<div class="m-4 p-4 border-2 rounded-md border-emerald-200">
+    <div class="text-center text-xl mb-4">
+        Chat with {{other_user.username}}
+    </div>
+    
+    <div class="space-y-4">  <!-- Espacio vertical entre mensajes -->
+        {% for message in messages %}
+            {% if message.sender == user %}
+            <div class="flex justify-end">
+                <div class="text-right border-2 border-emerald-200 rounded-md bg-emerald-300 p-2 w-auto max-w-xs">
+                    <div>{{message.body}}</div>
+                    <div class="text-xs text-gray-600">{{message.timestamp}}</div>
+                </div>
+            </div>
+            {% else %}
+            <div class="flex justify-start">
+                <div class="text-left border-2 border-gray-200 rounded-md bg-gray-300 p-2 w-auto max-w-xs">
+                    <div>{{message.body}}</div>
+                    <div class="text-xs text-gray-600">{{message.timestamp}}</div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <form class="border-2 borde-emerald-200 m-2 p-2" method="post" >
+            {% csrf_token %}
+            <div class="flex items-center justify-center">
+                <div class="flex-auto">{{ form.body }}</div>
+                <div class="flex-none">
+                    <button class="border-2 rounded-md p-2 m-4 border-emerald-300 bg-emerald-300 hover:bg-emerald-800 hover:text-white duration-150 hover:pl-4 hover:pr-4" type="submit">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock body %}

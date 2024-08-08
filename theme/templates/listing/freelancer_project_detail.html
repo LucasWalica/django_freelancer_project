@@ -33,7 +33,9 @@
                 Freelancer Profile
             </a>
         </div>
-        <div>Chat with </div>
+        <a href="{% url "messageWithOther" pk1=request.user.id pk2=freelancerProject.fkFler.user.id %}">
+            Chat with {{ freelancerProject.fkFler.user.username }}
+        </a>
         <div>
             <a href="{% url "recruiterSearch" %}">
                 Go back to projects

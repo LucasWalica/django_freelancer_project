@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block title %}
+Inbox
+{% endblock title %}
+
+{% block body %}
+{% if messages %}
+    <div class="border-2 border-emerald-200 p-4 m-2 rounded-md shadow-md bg-emerald-100">
+        <h1 class="text-center text-2xl m-4">Not read messages: </h1>
+        {% for message in unreadMessages %}
+        <div class="border-2 rounded-md border-emerald-600 bg-emerald-200 p-5">
+            <div class="grid md:grid-cols-2 text-center ">
+                <div>
+                    <div>{{ message.sender }} sent you a message</div>
+                    <div>{{ message.timestamp }}</div>
+                </div>
+                <div class="flex items-center justify-center">
+                    <a class="rounded-lg border-2 pr-4 pl-4 p-1 border-emerald-600 bg-emerald-300 hover:pl-6 hover:pr-6 hover:bg-emerald-100 hover:border-emerald-300 duration-150" href="{% url 'messageWithOther' pk1=request.user.id pk2=message.sender.id %}">
+                        Go to the Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="border-2 border-emerald-200 p-4 m-2 rounded-md shadow-md bg-emerald-100">
+    <h1 class="text-center text-2xl m-4">Active conversations:</h1>
+    {% for conversation in conversations %}
+        {% if conversation.sender == request.user %}
+            {% with other_user=conversation.receiver %}
+                <div class="grid sm:grid-cols-2 md:grid-cols-4 text-center">
+                    <a href="{% url 'messageWithOther' pk1=request.user.id pk2=other_user.id %}">
+                        Chat with {{ other_user.username }}
+                    </a>
+                </div>
+            {% endwith %}
+        {% elif conversation.receiver == request.user %}
+            {% with other_user=conversation.sender %}
+                <div class="grid sm:grid-cols-2 md:grid-cols-4 text-center">
+                    <a class="border-2 border-emerald-400 rounded-md bg-emerald-300 shadow-md hover:bg-emerald-100 hover:border-emerald-200 duration-200" href="{% url 'messageWithOther' pk1=request.user.id pk2=other_user.id %}">
+                        Chat with {{ other_user.username }}
+                    </a>
+                </div>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock body %}

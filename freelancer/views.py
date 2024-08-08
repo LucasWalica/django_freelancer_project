@@ -90,6 +90,7 @@ class CreateProjectOfferView(LoginRequiredMixin, View):
             'form':form
         }
         return render(request, 'freelancer/createProject.html', context)
+    
     def post(self, request, *args, **kwargs):
         if request.method == "POST":
             form = ProjectOfferForm(request.POST, request.FILES)
