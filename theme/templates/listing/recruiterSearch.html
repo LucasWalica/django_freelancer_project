@@ -5,38 +5,110 @@
 {% block body %}
 <div>
     <!--Mejorar UI-->
-    <h1 class="text-3xl text-center">Freelancer project list: </h1>
-    <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4">
-        {% for freeProject in freelancerProjects %}
-        <div class="min-h-72 border-2 rounded-md shadow-sm border-emerald-200 bg-emerald-500 text-center">
-            <div class="min-h-48">
-                <h1 class="text-3xl">{{freeProject.title}}</h1>
-                <center>
-                    <img class="rounded-md min-h-16 max-h-16" src="{{freeProject.image.url}}" height="100px" width="100px"></img>
-                </center>
-                <div>Price {{freeProject.price}} $</div>
-                <div>Done in {{freeProject.time_in_days}} days.</div>
-                <div>Revisions: {{freeProject.revisions}}</div>
-                <center>
-                    <div class="border-2 m-2 w-2/4 rounded-md border-emerald-200">
-                        <div class="bg-emerald-400 rounded-md m-2">Categories: </div>
-                        <div class="grid grid-cols-1">
-                            <div>{{freeProject.catOne}}</div>
-                            <div>{{freeProject.catTwo}}</div>
+    <div class="text-center border-2 m-2 p-2 border-emerald-300 bg-emerald-100">
+        <form method="GET" action="{% url 'recruiterSearch' %}" class="grid lg:grid-cols-3 text-center md:gap-y-6 sm:gap-y-4 gap-y-2">
+            <div>
+                <input type="text" name="query" placeholder="Search..." value="{{ request.GET.query }}">
+            </div>
+            <div>
+                <select name="sector" id="sector">
+                    <option value="">-- All Sectors --</option>
+                    {% for key, value in sectors %}
+                    <option value="{{ key }}" {% if request.GET.sector == key %}selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex items-center justify-center text-center">
+                <input type="submit" value="Search" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white duration-150 hover:pr-6 hover:pl-6">
+            </div>
+        </form>
+    </div>
+    <!--Freelancer Projects-->
+    <div>
+        {% if projectList %}
+        <h1 class="text-3xl text-center border-2 border-emerald-500 bg-emerald-600 rounded-md shadow-lg text-emerald-200 m-2">Freelancer project list: </h1>
+        {% else %}
+            <h1 class="text-3xl text-center border-2 border-red-500 bg-red-600 rounded-md shadow-lg text-red-200 m-2">No projects founded</h1>
+        {% endif %}
+        <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4">
+                {% for freeProject in projectList %}
+                <div class="min-h-72 border-2 rounded-md shadow-sm border-emerald-200 bg-emerald-500 text-center">
+                    <div class="min-h-48">
+                        <h1 class="text-3xl">{{freeProject.title}}</h1>
+                        <center>
+                            <img class="rounded-md min-h-16 max-h-16" src="{{freeProject.image.url}}" height="100px" width="100px"></img>
+                    </center>
+                    <div>Price {{freeProject.price}} $</div>
+                    <div>Done in {{freeProject.time_in_days}} days.</div>
+                    <div>Revisions: {{freeProject.revisions}}</div>
+                    <center>
+                        <div class="border-2 m-2 w-2/4 rounded-md border-emerald-200">
+                            <div class="bg-emerald-400 rounded-md m-2">Categories: </div>
+                            <div class="grid grid-cols-1">
+                                <div>{{freeProject.catOne}}</div>
+                                <div>{{freeProject.catTwo}}</div>
+                            </div>
                         </div>
+                    </center>
+                </div>
+                <center>
+                    <div class="mt-6">
+                        <a  href="{% url "freelancerProject" pk=freeProject.pk %}" class="rounded-md border-2 hover:bg-emerald-200 duration-150 border-white bg-emerald-300 p-4 m-2 hover:pr-6 hover:pl-6">
+                            See project details
+                        </a>
                     </div>
                 </center>
+                <br>
             </div>
-            <center>
-                <div class="mt-6">
-                    <a  href="{% url "freelancerProject" pk=freeProject.pk %}" class="rounded-md border-2 hover:bg-emerald-200 duration-150 border-white bg-emerald-300 p-4 m-2 hover:pr-6 hover:pl-6">
-                        See project details
+            {% endfor %}
+        </div>
+    </div>
+    <!--Freelancer Profiles-->
+    {% if freelancerList %}
+        <h1 class="text-3xl text-center border-2 border-emerald-500 bg-emerald-600 rounded-md shadow-lg text-emerald-200 m-2">Freelancer profiles: </h1>
+    {% else %}
+        <h1 class="text-3xl text-center border-2 border-red-500 bg-red-600 rounded-md shadow-lg text-red-200 m-2">No Profiles Founded</h1>
+    {% endif %}
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    {% for freelancer in freelancerList %}
+        <div class="border-2 rounded-md m-2 p-1 border-emerald-400 bg-emerald-500 shadow-md">
+            <div class="bg-emerald-400 rounded-md m-2 text-2xl text-center">{{freelancer.user}}</div>
+            <div class="h-56 flex items-center justify-center text-center">
+                <img src="{{freelancer.image.url}}" height="200px" width="200px" class="rounded-md shadow-md"></img>
+            </div>
+            <div class="h-40 m-1 text-center justify-center ">
+                <div class="min-h-40 max-h-40 border-2 border-emerald-50 rounded-md p-2">
+                    <h1 class="bg-emerald-400 rounded-md m-2">Bio: </h1>
+                    <p>{{freelancer.bio}}</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2">
+                <div class="items-center justify-center text-center">
+                    {% if freelancer.skills_set.all %}
+                    <center>
+                        <div class="border-2 m-2 w-2/4 rounded-md border-emerald-200">
+                            <div class="bg-emerald-400 rounded-md m-2">Skills: </div>
+                            <div class="grid grid-cols-1">
+                                {% for skill in freelancer.skills_set.all %}
+                                <div>{{ skill.name }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </center>
+                    {% endif %}
+                </div>    
+                <div class="flex flex-col duration-200 m-2 p-4 items-center justify-center text-center [&>a]:w-5/6">
+                    <a href="{% url "freelancer" freelancer.pk %}" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white">
+                        Freelancer Profile
+                    </a>
+                    <a href="{% url "messageWithOther" pk1=request.user.pk pk2=freelancer.user.pk %}" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white">
+                        Chat with Freelancer
                     </a>
                 </div>
-            </center>
-            <br>
+            </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
 </div>
 {% endblock body %}

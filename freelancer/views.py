@@ -138,8 +138,6 @@ class UpdateFreelancerProfileView(LoginRequiredMixin, UpdateView):
        return obj
 
 class UpdateProjectOfferView(LoginRequiredMixin, UpdateView):
-    def get(self, request, *args, **kwargs):
-        checkFreelancerExist(self, request)
     model = ProjectOffer
     fields = [ 'title', 'desc' , 'price' , 'time_in_days' , 'revisions', 'image', 'catOne', 'catTwo']
     template_name = 'freelancer/update_project.html'
@@ -218,6 +216,7 @@ class OtherProfileDetailView(View):
             'project_offers':project_offers
         }
         return render(request, 'freelancer/other_profile_detail.html', context)
+
 
 
 def checkFreelancerExist(self, request):

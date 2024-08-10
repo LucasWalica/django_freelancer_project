@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .models import RecruiterProfile, RecruiterProject, CommentOnRecruiter
+from .models import RecruiterProfile, RecruiterProject, CommentOnRecruiter, workingSectors
 from .forms import RecruiterProjectForm, RecruiterProfileForm, UpdateRecruiterProfileForm
 from django.views.generic import View, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from freelancer.models import ProjectOffer, FreelancerProfile
+from django.db.models import Q
 
 # Add comments logic, 
 # (basically they can only be added when project donde by X freelancer 
@@ -153,17 +154,39 @@ class OwnRecruiterView(LoginRequiredMixin, View):
     
 
 
-# this view has to be tested and improved to not show unactive profiles
+
 class FreelancerProjectListAndFreelancers(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         checkRecruiterExists(self, request)
-        freelancerProjects = ProjectOffer.objects.all()
-        freelancerProfiles = FreelancerProfile.objects.all()
+        query = self.request.GET.get('query')
+        sector_filter = request.GET.get('sector')
+
+        user = request.user
+        freelancer_profile = FreelancerProfile.objects.get(user=user)
+
+        projectList = ProjectOffer.objects.exclude(fkFler=freelancer_profile)
+
+        freelancerList = FreelancerProfile.objects.exclude(user=user.pk)
+
+        sectors = [(sector.value, sector.name) for sector in workingSectors]
+
+        if query:
+            projectList = ProjectOffer.objects.filter(Q(title__icontains=query) | Q(desc__icontains=query)).order_by('fkFler__stars')
+            freelancerList = FreelancerProfile.objects.filter(Q(skills__name__icontains=query) | Q(bio__icontains=query)).order_by('stars')
+
+        if sector_filter:
+            projectList = projectList.filter(Q(catOne__iexact=sector_filter) | Q(catTwo__iexact=sector_filter))
+
+
+
         context = {
-            'freelancerProjects':freelancerProjects,
-            'freelancerProfiles':freelancerProfiles
+            'projectList':projectList,
+            'freelancerList':freelancerList,
+            'sectors':sectors
         }
+
         return render(request, 'listing/recruiterSearch.html', context)
+
 
 # add limitations
 class RecruiterProjectDetailView(LoginRequiredMixin, View):
