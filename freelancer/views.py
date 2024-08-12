@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .models import FreelancerProfile, ProjectOffer, Skills
+from .models import FreelancerProfile, ProjectOffer, Skills, workingSectors
+from recruiter.models import RecruiterProject
 from .forms import SkillsForm, FreelancerProfileForm, ProjectOfferForm 
 from django.views.generic import View, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 from recruiter.models import RecruiterProject, RecruiterProfile
 
@@ -240,13 +242,37 @@ def checkRecruiterExists(self, request):
 # change this view with more context
 class ProjectListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
+        
         #test this
         checkFreelancerExist(self, request)
-        recruiterProjects = RecruiterProject.objects.all()
-        context= {
-            'recruiterProjects':recruiterProjects
+        
+        query = self.request.GET.get('query')
+        sector_filter = request.GET.get('sector')
+
+        user = request.user
+        recruiter_profile = RecruiterProfile.objects.get(user=user)
+
+        projectList = RecruiterProject.objects.exclude(fkRec=recruiter_profile)
+
+        sectors = [(sector.value, sector.name) for sector in workingSectors]
+        
+        if query:
+            projectList = ProjectOffer.objects.filter(
+                Q(title__icontains=query) | 
+                Q(desc__icontains=query)
+            ).order_by('fkFler__stars')
+            
+
+        if sector_filter:
+            projectList = projectList.filter(Q(catOne__iexact=sector_filter) | Q(catTwo__iexact=sector_filter))
+
+        
+        context = {
+            'projectList':projectList,
+            'sectors':sectors
         }
         return render(request, 'listing/freelancerSearch.html', context)
+
 
 
 class ProjectDetailView(LoginRequiredMixin, View):

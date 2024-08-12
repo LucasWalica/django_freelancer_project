@@ -48,7 +48,7 @@ class RecruiterProfile(models.Model):
 # add ACTIVE attribute
 class RecruiterProject(models.Model):
     fkRec = models.ForeignKey(RecruiterProfile, on_delete=models.CASCADE)
-    title = models.CharField(blank=False, max_length=20)
+    title = models.CharField(blank=False, max_length=40)
     desc = models.TextField(blank=False, max_length=1000)
     catOne = models.CharField(max_length=30, choices=[(c.value, c.name) for c in workingSectors], blank=False, null=False)
     catTwo = models.CharField(max_length=30, choices=[(c.value, c.name) for c in workingSectors], blank=True, null=True)

@@ -1,26 +1,71 @@
 {% extends "main.html" %}
 {% block title %}
-    ProjectRecruiter List
+    Recruiter Projects
 {% endblock title %}
 {% block body %}
 <div>
     <!--Mejorar UI-->
-    <h1 class="text-3xl text-center">ProjectRecruiter List: </h1>
-    {% for projectRecruiter in recruiterProjects %}
-        <div class="items-center justify-center text-center border-2 border-emerald-200 p-2 m-2">
-            <h1 class="text-3xl">{{projectRecruiter.title}}</h1>
-            <div>{{projectRecruiter.desc}}</div>
-            {{projectRecruiter.catOne}}
-            <br>
-            {{projectRecruiter.catTwo}}
-            <br><br>
-            <center>
-                <a  href="{% url "recruiterProject" pk=projectRecruiter.pk %}" class="rounded-md p-4 m-11 border-2 border-emerald-200 bg-emerald-400 hover:bg-emerald-700 hover:text-white duration-150">
-                    See Details
-                </a>
-            </center>
-            <br>
+    <div class="text-center border-2 m-2 p-2 border-emerald-300 bg-emerald-100">
+        <form method="GET" action="{% url 'projects' %}" class="grid lg:grid-cols-3 text-center md:gap-y-6 sm:gap-y-4 gap-y-2">
+            <div>
+                <input type="text" name="query" placeholder="Search..." value="{{ request.GET.query }}">
+            </div>
+            <div>
+                <select name="sector" id="sector">
+                    <option value="">-- All Sectors --</option>
+                    {% for key, value in sectors %}
+                    <option value="{{ key }}" {% if request.GET.sector == key %}selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="flex items-center justify-center text-center">
+                <input type="submit" value="Search" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white duration-150 hover:pr-6 hover:pl-6">
+            </div>
+        </form>
+    </div>
+    <!--Freelancer Projects-->
+    <div>
+        {% if projectList %}
+        <h1 class="text-3xl text-center border-2 border-emerald-500 bg-emerald-600 rounded-md shadow-lg text-emerald-200 m-2">Freelancer project list: </h1>
+        {% else %}
+            <h1 class="text-3xl text-center border-2 border-red-500 bg-red-600 rounded-md shadow-lg text-red-200 m-2">No projects founded</h1>
+        {% endif %}
+        <div>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-4">
+                    {% for project in projectList %}
+                    <div class="min-h-72 border-2 rounded-md shadow-sm border-emerald-200 bg-emerald-500 text-center">
+                        <div class="min-h-48">
+                            <h1 class="text-3xl m-2 border-2 rounded-md">{{project.title}}</h1>
+                        <center>
+                            <div class="border-2 m-2 w-2/4 h-1/4 rounded-md border-emerald-200">
+                                <div class="bg-emerald-400 rounded-md m-2">Categories: </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="h-2"></div>
+                                    <div>{{project.catOne}}</div>
+                                    <div>{{project.catTwo}}</div>
+                                </div>
+                            </div>
+                        </center>
+                    </div>
+                    <center>
+                        <h1 class="border-2 rounded-md w-2/4 text-xl ">
+                            Vacancies: {{project.vacancies}}
+                        </h1>
+                    </center>
+                    <center>
+                        <div class="mt-6">
+                            <a  href="{% url "recruiterProject" pk=project.pk %}" class="rounded-md border-2 hover:bg-emerald-200 duration-150 border-white bg-emerald-300 p-4 m-2 hover:pr-6 hover:pl-6">
+                                See project details
+                            </a>
+                        </div>
+                    </center>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-    {% endfor %}
+    </div>
 </div>
 {% endblock body %}

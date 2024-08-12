@@ -6,14 +6,34 @@
 
 {% block body %}
 <div class="border-2 border-emerald-200 rounded-md p-4 m-2 bg-emerald-200">
-    <h1 class="text-2xl">{{ rec_project.title }}</h1>
-    <p><strong>Recruiter:</strong> {{ rec_project.fkRec.user.username }}</p>
-    <p><strong>Description:</strong> {{ rec_project.desc }}</p>
-    <p><strong>Category One:</strong> {{ rec_project.catOne }}</p>
-    <p><strong>Category Two:</strong> {{ rec_project.catTwo }}</p>
-    <p><strong>Vacancies:</strong> {{ rec_project.vacancies }}</p>
-    {% if rec_project.image %}
-        <img src="{{ rec_project.image.url }}" alt="{{ rec_project.title }}">
-    {% endif %}
+    <h1 class="text-3xl text-center">{{ rec_project.title }}</h1>
+    <div class="border-2 border-emerald-100 rounded-md bg-emerald-200 p-2 m-2">
+        <p class="text-center text-lg">
+            <strong>Recruiter:</strong> {{ rec_project.fkRec.user.username }}
+        </p>
+        <p class="m-2">
+            <strong>Description: <br></strong> {{ rec_project.desc }}
+        </p>
+        <div class="border-2 m-2 p-2 rounded-md bg-emerald-300 border-emerald-300">
+            <p><strong>Category One:</strong> {{ rec_project.catOne }}</p>
+            <p><strong>Category Two:</strong> {{ rec_project.catTwo }}</p>
+        </div>
+        <p class="text-center"><strong>Vacancies:</strong> {{ rec_project.vacancies }}</p>
+    </div>
+</div>
+    <div class=" m-2 border-2 border-emerald-950 bg-emerald-200 rounded-md flex items-center justify-center text-center min-h-24">
+        <a class="border-2 rounded-md border-emerald-200 bg-emerald-100  m-2 p-2 w-2/4 hover:bg-emerald-700 hover:text-white  duration-200" href="{% url "otherRecruiter" rec_project.fkRec.user.recruiterprofile.pk %}">
+            Recruiter Profile
+        </a>
+        <a class="border-2 rounded-md border-emerald-200 bg-emerald-100  m-2 p-2 w-2/4 hover:bg-emerald-700 hover:text-white  duration-200" href="{% url "messageWithOther" pk1=request.user.id pk2=rec_project.fkRec.user.id %}">
+            Chat with Recruiter {{ freelancerProject.fkFler.user.username }}
+        </a>
+        <a class="border-2 rounded-md border-emerald-200 bg-emerald-100  m-2 p-2 w-2/4 hover:bg-emerald-700 hover:text-white  duration-200" href="{% url "projects" %}">
+            Go back to projects
+        </a>
+        <a class="border-2 rounded-md border-emerald-200 bg-emerald-100  m-2 p-2 w-2/4 hover:bg-emerald-700 hover:text-white  duration-200" >
+            Join the project
+        </a>
+    </div>
 </div>
 {% endblock body %}

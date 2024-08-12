@@ -25,10 +25,10 @@ Recruiter Profile
       <center>
         {% if profile.image %}
         <figure>
-          <img src="{{profile.image.url}}" alt="Recruiter logo"></img>
+          <img src="{{profile.image.url}}" alt="Recruiter logo" class="flex items-center justify-center text-center"></img>
         </figure>
         {% else %}
-        <div class="text-center">
+        <div class="flex items-center justify-center text-center">
           no image avaible add default image when possible 
         </div>
         {% endif %}    

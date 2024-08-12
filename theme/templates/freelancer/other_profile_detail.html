@@ -16,7 +16,19 @@
             </div>
             <img class="rounded-md" height="200px" width="200px" src="{{profile.image.url}}"/>
         </div>
-        <div class="text-xl m-4 border-2 border-emerald-100 rounded-md text-center">Bio:  {{profile.bio}}</div>
+        <div class="text-xl m-4 border-2 border-emerald-100 rounded-md text-center">
+            Bio:  {{profile.bio}}
+        </div>
+    </div>
+    <br>
+    <div class="ml-2 mr-2 bg-emerald-100 p-4 grid sm:grid-cols-2 text-center ">
+        <a href="{% url "messageWithOther" pk1=request.user.pk pk2=profile.user.pk %}" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white">
+            Chat with freelancer
+        </a>
+        <!--Add "offer recruitment for project" -->
+        <a class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white">
+            Recruit for project
+        </a>
     </div>
     <br>
     <!--Skill User data-->

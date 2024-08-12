@@ -60,14 +60,14 @@ class CreateRecruiterProject(LoginRequiredMixin, View):
                 if result:
                     return result
                 
-                recruiter_profile = request.user.recruiterprofile
+                recruiterprofile = request.user.recruiterprofile
                 title = form.cleaned_data.get('title')
                 desc = form.cleaned_data.get('desc')
                 catOne = form.cleaned_data.get('catOne')
                 catTwo  = form.cleaned_data.get('catTwo')
                 vacancies = form.cleaned_data.get('vacancies')
 
-                rp = RecruiterProject.objects.get_or_create(fkRec=recruiter_profile,
+                rp = RecruiterProject.objects.get_or_create(fkRec=recruiterprofile,
                                                             title = title, desc=desc,
                                                             catOne =catOne, catTwo=catTwo,
                                                             vacancies=vacancies)
@@ -107,12 +107,12 @@ class UpdateRecruiterProject(LoginRequiredMixin, UpdateView):
     template_name = 'recruiter/update_recruiter_project.html'
 
     def get_success_url(self):
-        return reverse_lazy('profile', kwargs={'pk': self.request.user.recruiter_profile.id})
+        return reverse_lazy('profile', kwargs={'pk': self.request.user.recruiterprofile.pk})
         
     def get_object(self):
         obj = super().get_object()
         if obj.fkRec.user != self.request.user:
-            return redirect('recruiter', kwargs={'pk': self.request.user.recruiter_profile.pk})
+            return redirect('recruiter', kwargs={'pk': self.request.user.recruiterprofile.pk})
         return obj
 
 
@@ -122,12 +122,12 @@ class DeleteRecruiterProject(LoginRequiredMixin, DeleteView):
     template_name = 'recruiter/delete_project.html'
     
     def get_success_url(self):
-        return reverse_lazy('recruiter', kwargs={'pk': self.request.user.recruiter_profile.pk})
+        return reverse_lazy('recruiter', kwargs={'pk': self.request.user.recruiterprofile.pk})
     
     def get_object(self):
         obj = super().get_object()
         if obj.fkRec.user != self.request.user:
-            return redirect('recruiter', kwargs={'pk': self.request.user.recruiter_profile.pk})
+            return redirect('recruiter', kwargs={'pk': self.request.user.recruiterprofile.pk})
         return obj
 
 
@@ -197,6 +197,19 @@ class RecruiterProjectDetailView(LoginRequiredMixin, View):
              'rec_project':rec_project
          }
          return render(request, 'listing/recruiter_project_detail.html', context)
+
+
+class OtherProfileDetailView(View):
+     def get(self, request, pk, *args, **kwargs):
+        checkFreelancerExist(self, request)
+        profile = get_object_or_404(RecruiterProfile, pk=pk)
+        project_offers = RecruiterProject.objects.filter(fkRec=profile)
+        context = {
+            'profile':profile,
+            'project_offers':project_offers
+        }
+        return render(request, 'recruiter/other_recruiter_detail.html', context)
+     
 
 
 def checkRecruiterExists(self, request):

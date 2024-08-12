@@ -5,33 +5,41 @@ Chat
 {% endblock title %}
 
 {% block body %}
-<div class="m-4 p-4 border-2 rounded-md border-emerald-200">
-    <div class="text-center text-xl mb-4">
-        Chat with {{other_user.username}}
+<div class="m-4 p-4 border-2 rounded-md border-emerald-400 bg-lime-50">
+    <div class="grid md:grid-cols-2 grid-cols-1">
+        <div class="text-center text-xl mb-4 border-2 border-emerald-800 rounded-md bg-emerald-50 shadow-lg">
+            Chat with {{other_user.username}} 
+        </div>
+        <div class="grid grid-cols-2  text-center rounded-md mb-4">
+            <a href="{% url "otherRecruiter" other_user.recruiterprofile.pk %}" class="border-2 rounded-md border-emerald-200 shadow-lg bg-emerald-50 hover:border-emerald-950 hover:bg-emerald-500 hover:text-white duration-200">
+                Recruiter Profile
+            </a>
+            <a class="border-2 rounded-md border-emerald-200 shadow-lg bg-emerald-50 hover:border-emerald-950 hover:bg-emerald-500 hover:text-white duration-200">Payment</a>
+        </div>
     </div>
     
-    <div class="space-y-4">  <!-- Espacio vertical entre mensajes -->
+    <div class="space-y-4" >  <!-- Espacio vertical entre mensajes -->
         {% for message in messages %}
             {% if message.sender == user %}
             <div class="flex justify-end">
-                <div class="text-right border-2 border-emerald-200 rounded-md bg-emerald-300 p-2 w-auto max-w-xs">
+                <div class="text-right border-2 border-emerald-400 rounded-md bg-emerald-300 p-2 w-auto max-w-xs shadow-lg">
                     <div>{{message.body}}</div>
                     <div class="text-xs text-gray-600">{{message.timestamp}}</div>
                 </div>
             </div>
             {% else %}
             <div class="flex justify-start">
-                <div class="text-left border-2 border-gray-200 rounded-md bg-gray-300 p-2 w-auto max-w-xs">
+                <div class="text-left border-2 border-gray-400 rounded-md bg-gray-300 p-2 w-auto max-w-xs shadow-lg">
                     <div>{{message.body}}</div>
                     <div class="text-xs text-gray-600">{{message.timestamp}}</div>
                 </div>
             </div>
             {% endif %}
         {% endfor %}
-        <form class="border-2 borde-emerald-200 m-2 p-2" method="post" >
+        <form class="border-2 border-emerald-900 bg-emerald-700 rounded-md  m-2 p-2" method="post" >
             {% csrf_token %}
             <div class="flex items-center justify-center">
-                <div class="flex-auto">{{ form.body }}</div>
+                <div class="flex-auto mt-2 md-2 ml-2">{{ form.body }}</div>
                 <div class="flex-none">
                     <button class="border-2 rounded-md p-2 m-4 border-emerald-300 bg-emerald-300 hover:bg-emerald-800 hover:text-white duration-150 hover:pl-4 hover:pr-4" type="submit">
                         Send
