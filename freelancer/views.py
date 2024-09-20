@@ -250,7 +250,9 @@ class ProjectListView(LoginRequiredMixin, View):
         sector_filter = request.GET.get('sector')
 
         user = request.user
+
         recruiter_profile = RecruiterProfile.objects.get(user=user)
+        freelancer_profile = FreelancerProfile.objects.get(user=user)
 
         projectList = RecruiterProject.objects.exclude(fkRec=recruiter_profile)
 
@@ -260,7 +262,7 @@ class ProjectListView(LoginRequiredMixin, View):
             projectList = ProjectOffer.objects.filter(
                 Q(title__icontains=query) | 
                 Q(desc__icontains=query)
-            ).order_by('fkFler__stars')
+            ).exclude(fkFler=freelancer_profile).order_by('fkFler__stars')
             
 
         if sector_filter:

@@ -84,22 +84,20 @@
                     <p>{{freelancer.bio}}</p>
                 </div>
             </div>
-            <div class="grid grid-cols-2">
-                <div class="items-center justify-center text-center">
+            <div class="grid grid-cols-3">
+                <div class="col-span-2 items-center justify-center text-center">
                     {% if freelancer.skills_set.all %}
-                    <center>
-                        <div class="border-2 m-2 w-2/4 rou<nded-md border-emerald-200">
-                            <div class="bg-emerald-400 rounded-md m-2">Skills: </div>
+                        <div class="border-2 m-2 rounded-md border-emerald-600 bg-emerald-600">
+                            <div class="bg-emerald-400 rounded-md m-1">Skills: </div>
                             <div class="grid grid-cols-1">
                                 {% for skill in freelancer.skills_set.all %}
-                                <div>{{ skill.name }}</div>
+                                    <div class="m-1 border-2 rounded-md  bg-emerald-100">{{ skill.name }}</div>
                                 {% endfor %}
                             </div>
                         </div>
-                    </center>
                     {% endif %}
                 </div>    
-                <div class="flex flex-col duration-200 m-2 p-4 items-center justify-center text-center [&>a]:w-5/6">
+                <div class="flex flex-col duration-200 m-2 p-4 items-center justify-center text-center [&>a]:w-auto [&>a]:mr-2">
                     <a href="{% url "freelancer" freelancer.pk %}" class="border-2 pr-4 pl-4 p-2 rounded-md border-emerald-600 bg-emerald-200 hover:bg-emerald-950 hover:text-white">
                         Freelancer Profile
                     </a>

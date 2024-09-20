@@ -18,6 +18,7 @@ class FreelancerProfileForm(forms.ModelForm):
     
       
     def __init__(self, *args, **kwargs):
+        super(FreelancerProfileForm, self).__init__(*args, **kwargs)
         self.fields['bio'].widget.attrs.update({'class':'form-input w-full rounded-md'})
         self.fields['image'].widget.attrs.update({'class':'form-input w-full rounded-md'})
     
@@ -30,6 +31,7 @@ class SkillsForm(forms.ModelForm):
 
       
     def __init__(self, *args, **kwargs):
+        super(SkillsForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update({'class':'form-input w-full rounded-md'})
     
 

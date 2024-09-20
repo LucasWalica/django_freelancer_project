@@ -171,12 +171,11 @@ class FreelancerProjectListAndFreelancers(LoginRequiredMixin, View):
         sectors = [(sector.value, sector.name) for sector in workingSectors]
 
         if query:
-            projectList = ProjectOffer.objects.filter(Q(title__icontains=query) | Q(desc__icontains=query)).order_by('fkFler__stars')
-            freelancerList = FreelancerProfile.objects.filter(Q(skills__name__icontains=query) | Q(bio__icontains=query)).order_by('stars')
+            projectList = ProjectOffer.objects.filter(Q(title__icontains=query) | Q(desc__icontains=query)).exclude(fkFler=freelancer_profile).order_by('fkFler__stars')
+            freelancerList = FreelancerProfile.objects.filter(Q(skills__name__icontains=query) | Q(bio__icontains=query)).exclude(user=user.pk).order_by('stars')
 
         if sector_filter:
-            projectList = projectList.filter(Q(catOne__iexact=sector_filter) | Q(catTwo__iexact=sector_filter))
-
+            projectList = projectList.filter(Q(catOne__iexact=sector_filter) | Q(catTwo__iexact=sector_filter)).exclude(fkFler=freelancer_profile).order_by('fkFler_stars')
 
 
         context = {

@@ -44,7 +44,6 @@ class RecruiterProfile(models.Model):
     def __str__(self):
         return f"{self.pk} - {self.user}"
 
-
 # add ACTIVE attribute
 class RecruiterProject(models.Model):
     fkRec = models.ForeignKey(RecruiterProfile, on_delete=models.CASCADE)

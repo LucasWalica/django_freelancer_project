@@ -27,20 +27,19 @@
     </center>
     {% endif %}
 
-    <div class="grid md:grid-cols-3 text-center m-2 border-2 border-emerald-300 rounded-md">
-        <div>
-            <a href="{% url "freelancer" freelancerProject.fkFler.user.freelancerprofile.pk %}">
-                Freelancer Profile
-            </a>
-        </div>
-        <a href="{% url "messageWithOther" pk1=request.user.id pk2=freelancerProject.fkFler.user.id %}">
+    <div class="grid md:grid-cols-4 text-center m-2 border-2 border-emerald-300 rounded-md [&>*]:m-1 [&>*]:border-2 [&>*]:rounded-md">
+        <a href="{% url "freelancer" freelancerProject.fkFler.user.freelancerprofile.pk %}" class="border-emerald-500 bg-emerald-500 hover:bg-emerald-800 hover:text-white duration-200">
+            Freelancer Profile
+        </a>
+        <a href="{% url "messageWithOther" pk1=request.user.id pk2=freelancerProject.fkFler.user.id %}" class="border-emerald-300 bg-emerald-300 hover:bg-emerald-600 hover:text-white duration-200">
             Chat with {{ freelancerProject.fkFler.user.username }}
         </a>
-        <div>
-            <a href="{% url "recruiterSearch" %}">
-                Go back to projects
-            </a>
-        </div>
+        <a href="{% url "recruiterSearch" %}" class="border-orange-200 bg-orange-300 hover:bg-orange-800 hover:text-white duration-200">
+            Go back to projects
+        </a>
+        <a class="border-lime-500 bg-lime-500 hover:bg-lime-800 hover:text-white duration-200">
+            Buy project offer
+        </a>
     </div>
 </div>
 {% endblock body %}
