@@ -36,8 +36,6 @@ class InboxView(View, LoginRequiredMixin):
         }
         return render(request, 'messages/inbox.html', context)
 
-
-
 #chatView with each other 
 class MessagesWithOtherView(LoginRequiredMixin, View):
     def get(self, request, pk2, *args, **kwargs):
@@ -88,6 +86,7 @@ class MessagesWithOtherView(LoginRequiredMixin, View):
         }
         
         return render(request, 'messages/chat.html', context)
+
 
 
 def check_user_profile_exists(user):
