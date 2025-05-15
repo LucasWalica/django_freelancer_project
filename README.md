@@ -1,2 +1,1 @@
-# django_blog_tying_to_deploy
- 
+A simple MVC project that I did in my student phase, it has some interesting features but it started to be hard to maintin due the usage of pure MVC in a project that was suposed to be pretty big, my fault I guess xD
